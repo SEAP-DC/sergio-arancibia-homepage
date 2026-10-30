@@ -181,9 +181,11 @@ with sync_playwright() as pw:
 
     # 6) Etiquetas sociales, datos estructurados, navegación activa y cero terceros
     seo_page = browser.new_page(viewport={"width": 1440, "height": 900})
+    # "propio" = el origen que estamos probando (preview local o produccion)
+    origen = URL.split("://", 1)[1].split("/")[0]
     external = []
     seo_page.on("request", lambda r: external.append(r.url)
-                if not r.url.startswith(("http://localhost", "http://127.0.0.1", "data:")) else None)
+                if not (r.url.startswith("data:") or origen in r.url.split("://", 1)[1]) else None)
     seo_page.goto(URL, wait_until="networkidle")
     seo_page.evaluate("document.getElementById('proyectos').scrollIntoView()")
     seo_page.wait_for_timeout(600)
