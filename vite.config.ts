@@ -9,7 +9,7 @@ function nojekyllPlugin(outDir: string): Plugin {
   return {
     name: "write-nojekyll",
     closeBundle() {
-      fs.writeFileSync(path.resolve(__dirname, outDir, ".nojekyll"), "");
+      fs.writeFileSync(path.resolve(import.meta.dirname, outDir, ".nojekyll"), "");
     },
   };
 }

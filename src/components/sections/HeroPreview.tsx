@@ -93,7 +93,7 @@ export function HeroPreview() {
         </p>
         <div className="flex h-28 items-end gap-1.5 sm:gap-2">
           {BARS.map((bar, i) => (
-            <div key={i} className="relative flex-1">
+            <div key={i} className="relative flex-1 h-full">
               <div
                 className={`w-full rounded-t ${mounted ? "animate-bar-grow" : ""} ${
                   bar.alert
@@ -138,7 +138,7 @@ export function HeroPreview() {
       {/* Chip de estado */}
       <p
         aria-hidden="true"
-        className="absolute -right-3 top-16 hidden rounded-full border border-line bg-card px-3 py-1.5 font-mono text-xs text-muted shadow-md sm:block dark:shadow-black/20"
+        className="absolute -bottom-3 right-5 hidden rounded-full border border-line bg-card px-3 py-1.5 font-mono text-xs text-muted shadow-md sm:block dark:shadow-black/20"
       >
         ● actualizado hace 5 min
       </p>

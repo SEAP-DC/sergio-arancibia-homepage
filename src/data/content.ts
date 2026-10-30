@@ -14,6 +14,7 @@ import type {
   FaqItem,
   NavItem,
   Project,
+  SocialLink,
   Stat,
   Step,
 } from "../types";
@@ -26,6 +27,16 @@ export const site = {
   email: "ser.arancibia@gmail.com",
   // versión visible (obfuscar @ para que no lo raspéen buscadores/spam)
   emailDisplay: "ser.arancibia(a)gmail.com",
+  url: "https://dongrafff.github.io/sergio-arancibia-homepage/",
+  // Perfiles públicos. Se muestran en contacto y pie de página solo si van cargados;
+  // agregar aquí (ej. LinkedIn) no requiere tocar componentes.
+  social: [
+    {
+      label: "GitHub",
+      href: "https://github.com/dongrafff",
+      handle: "github.com/dongrafff",
+    },
+  ] as SocialLink[],
 };
 
 export const navItems: NavItem[] = [

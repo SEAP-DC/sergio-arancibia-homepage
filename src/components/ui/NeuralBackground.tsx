@@ -210,10 +210,18 @@ export function NeuralBackground() {
     // Re-leer colores cuando cambie el tema (.dark / .light en <html>).
     const themeObserver = new MutationObserver(readColors);
 
+    // Si el usuario cambia la preferencia de movimiento sin recargar la página.
+    const onMotionPrefChange = () => {
+      cancelAnimationFrame(raf);
+      if (reducedMotion.matches) drawFrame(0);
+      else raf = requestAnimationFrame(loop);
+    };
+
     window.addEventListener("resize", resize);
     document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("mousemove", onMouseMove, { passive: true });
     document.documentElement.addEventListener("mouseleave", onMouseLeave);
+    reducedMotion.addEventListener("change", onMotionPrefChange);
     themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
     return () => {
@@ -223,6 +231,7 @@ export function NeuralBackground() {
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("mousemove", onMouseMove);
       document.documentElement.removeEventListener("mouseleave", onMouseLeave);
+      reducedMotion.removeEventListener("change", onMotionPrefChange);
     };
   }, []);
 

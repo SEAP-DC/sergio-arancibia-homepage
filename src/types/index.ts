@@ -48,3 +48,10 @@ export interface EducationItem {
   school: string;
   years: string;
 }
+
+export interface SocialLink {
+  label: string;
+  href: string;
+  /** Texto visible (sin protocolo), para el pie de página. */
+  handle: string;
+}

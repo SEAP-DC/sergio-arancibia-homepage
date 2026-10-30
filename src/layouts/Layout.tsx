@@ -13,7 +13,7 @@ export function Layout({ children }: { children: ReactNode }) {
         Saltar al contenido principal
       </a>
       <Header />
-      <main id="contenido" className="focus:outline-none">
+      <main id="contenido" tabIndex={-1} className="focus:outline-none">
         {children}
       </main>
       <Footer />

@@ -37,11 +37,30 @@ export function Contact() {
         </Reveal>
 
         <Reveal delay={240}>
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex flex-col items-center gap-4">
             <Button href={mailto} size="lg" variant="primary">
               {site.emailDisplay}
               <ArrowUpRight size={17} aria-hidden="true" />
             </Button>
+
+            {/* Perfiles públicos (solo los que estén cargados en data/content) */}
+            {site.social.length > 0 && (
+              <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+                {site.social.map((profile) => (
+                  <li key={profile.href}>
+                    <a
+                      href={profile.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded text-sm text-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                    >
+                      {profile.label}
+                      <ArrowUpRight size={14} aria-hidden="true" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </Reveal>
 

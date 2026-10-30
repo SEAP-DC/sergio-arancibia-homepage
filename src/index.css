@@ -3,6 +3,25 @@
 /* Dark mode por clase (.dark en <html>) */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ── Tipografías autoalojadas (solo subset latin, woff2 variable) ──
+   Sin petición a Google Fonts: menos DNS/bloqueo en el primer render,
+   funciona sin conexión y no expone datos del visitante a un tercero. */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/inter-400-700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("./assets/fonts/jetbrains-mono-400-600.woff2") format("woff2");
+}
+
 /* ── Tokens semánticos ──────────────────────────────────────────
    Modo oscuro (por defecto) = paleta AI Data Lab:
    Background #070A0F · Surface #0D1117 · Text #F2F4F7 · Secondary #8B949E
@@ -16,7 +35,8 @@
   --line: #232a33;
   --ink: #f2f4f7;
   --muted: #8b949e;
-  --faint: #667080;
+  /* --faint: texto pequeño secundario. AA exige 4.5:1 sobre card-2 (#161b22). */
+  --faint: #7c8794;
   --accent: #00d4aa;
   --accent-strong: #3be7c1;
   --accent-text: #2fe3bd;
@@ -35,11 +55,12 @@
   --card-2: #edf1f6;
   --line: #dbe2ea;
   --ink: #1a212e;
-  --muted: #5b6673;
-  --faint: #9aa4b0;
+  --muted: #4f5a67;
+  /* AA: 4.5:1 mínimo para texto pequeño también en modo claro. */
+  --faint: #5f6b78;
   --accent: #0ca88d;
   --accent-strong: #0b917c;
-  --accent-text: #0a7f6e;
+  --accent-text: #0a7566;
   --on-accent: #ffffff;
   --accent-soft: rgba(12, 168, 141, 0.1);
   --accent-2: #6d4aff;

@@ -55,6 +55,18 @@ export function Footer() {
               </a>
             </li>
             <li className="text-sm text-faint">{site.location}</li>
+            {site.social.map((profile) => (
+              <li key={profile.href}>
+                <a
+                  href={profile.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded text-sm text-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                >
+                  {profile.handle}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
