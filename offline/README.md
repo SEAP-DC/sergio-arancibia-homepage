@@ -1,20 +1,25 @@
 # Copia offline de la Homepage (13 Homepage)
 
-Copia autocontenida del build (`dist/`) pensada para revisarse **sin internet**:
+Copia autocontenida del build, para revisarla **sin internet y sin servidor**:
+se abre con doble clic.
 
-- `index.html` — el sitio con el JS del bundle **incrustado dentro** (así evita el bloqueo CORS de módulos ES bajo protocolo `file://`, que es lo que rompía la primera copia).
-- `assets/fonts.css` — fuentes Inter y JetBrains Mono incrustadas en base64, sin depender de Google Fonts.
-- `assets/index-cTLyBa5K.css` — CSS del build (rutas relativas, funciona con doble clic).
-
-Verificado el 2026-08-28 con Chromium headless contra `file://`: cero errores de consola, cero peticiones externas y tipografías cargadas.
+- `index.html` — el sitio con el **JS y el CSS incrustados dentro**, y las
+  tipografías Inter / JetBrains Mono en `data:` (base64). Así no choca con el
+  bloqueo CORS que el navegador aplica a módulos ES y hojas de estilo locales
+  bajo protocolo `file://`, que es lo que dejaba la copia anterior sin estilos.
+- `og-cover.png`, favicon y demás estáticos — al lado, con rutas relativas.
 
 ## Cómo abrirla
 
 Doble clic en **index.html** — o arrástrala a cualquier navegador.
-También puedes servir la carpeta: `npx serve offline` y entrar al puerto que indique.
 
-## Nota
+## Regenerarla tras cambiar el código
 
-El código fuente está en `..\src` (este proyecto). Para regenerar esta copia tras
-cambiar el código, ejecuta `npm run build` en la raíz del proyecto y vuelve a copiar
-`dist/` aquí. Fecha de esta copia: 2026-08-28.
+```bash
+npm run build && npm run offline
+```
+
+(el script es `scripts/build_offline.py`; no editar esta carpeta a mano, se
+borra y se vuelve a crear completa)
+
+Copia generada el 2026-10-30.

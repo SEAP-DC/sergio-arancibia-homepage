@@ -25,3 +25,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# capturas del QA local (se regeneran con npm run verify)
+scripts/verify_out/

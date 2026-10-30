@@ -1,15 +1,34 @@
 # Verificación visual/DOM del portafolio (etapa 11, idea.md §15).
 # Uso: python verify.py  -> imprime JSON de resultados y guarda screenshots.
 import json
+import os
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-URL = "http://127.0.0.1:4173"
+# `vite preview` escucha en localhost (que en Windows resuelve a IPv6 ::1),
+# por eso 127.0.0.1 falla. Se puede apuntar a otra URL con HOMEPAGE_URL.
+URL = os.environ.get("HOMEPAGE_URL", "http://localhost:4173")
 OUT = Path(__file__).parent / "verify_out"
 OUT.mkdir(exist_ok=True)
 
 SECTIONS = ["que-hago", "proyectos", "como-trabajo", "preguntas", "contacto"]
+
+
+def desplegar(page) -> None:
+    """Recorre la página por tramos antes de capturarla completa: los bloques
+    [data-reveal] empiezan en opacity 0 y solo aparecen al entrar en pantalla."""
+    page.evaluate(
+        """async () => {
+            const paso = Math.round(window.innerHeight * 0.8);
+            for (let y = 0; y < document.body.scrollHeight; y += paso) {
+                window.scrollTo(0, y);
+                await new Promise(r => setTimeout(r, 120));
+            }
+            window.scrollTo(0, 0);
+        }"""
+    )
+    page.wait_for_timeout(400)
 
 
 def probe(page):
@@ -69,6 +88,7 @@ with sync_playwright() as pw:
     page = browser.new_page(viewport={"width": 1440, "height": 900})
     page.goto(URL, wait_until="networkidle")
     r_desktop_light = check("desktop-claro", page)
+    desplegar(page)
     page.screenshot(path=str(OUT / "desktop-light.png"), full_page=True)
 
     # 2) Desktop oscuro: forzar tema con el toggle real (aria-label "Cambiar a modo ...")
@@ -83,6 +103,7 @@ with sync_playwright() as pw:
         r_desktop_dark.setdefault("errors", []).append(
             f"toggle no cambió tema (dark antes={was_dark}, después={r_desktop_dark['darkClass']})"
         )
+    desplegar(page)
     page.screenshot(path=str(OUT / "desktop-dark.png"), full_page=True)
 
     # 3) Mobile 390px: nav colapsada, sin overflow horizontal
@@ -117,6 +138,7 @@ with sync_playwright() as pw:
     r_mobile["hamburguesaToggleAriaExpanded"] = burger_ok
     if not burger.count():
         r_mobile["errors"].append("no hay botón de menú móvil con aria-expanded")
+    desplegar(mpage)
     mpage.screenshot(path=str(OUT / "mobile-light.png"), full_page=True)
 
     # 4) prefers-reduced-motion: animaciones desactivadas (comprobación CSS)
@@ -157,10 +179,54 @@ with sync_playwright() as pw:
         "rutaFoco": focus_trail,
     }
 
+    # 6) Etiquetas sociales, datos estructurados, navegación activa y cero terceros
+    seo_page = browser.new_page(viewport={"width": 1440, "height": 900})
+    external = []
+    seo_page.on("request", lambda r: external.append(r.url)
+                if not r.url.startswith(("http://localhost", "http://127.0.0.1", "data:")) else None)
+    seo_page.goto(URL, wait_until="networkidle")
+    seo_page.evaluate("document.getElementById('proyectos').scrollIntoView()")
+    seo_page.wait_for_timeout(600)
+    r_seo = {"name": "seo-y-nav", **seo_page.evaluate("""() => {
+        const meta = (p) => !!document.querySelector(`meta[property="${p}"]`);
+        let jsonLd = 'ausente';
+        const ld = document.querySelector('script[type="application/ld+json"]');
+        if (ld) { try { jsonLd = JSON.parse(ld.textContent)['@type'] ?? 'sin @type'; }
+                  catch { jsonLd = 'JSON INVÁLIDO'; } }
+        return {
+            ogTitle: meta('og:title'), ogImage: meta('og:image'), ogUrl: meta('og:url'),
+            canonical: !!document.querySelector('link[rel="canonical"]'),
+            twitterCard: !!document.querySelector('meta[name="twitter:card"]'),
+            jsonLd,
+            navActiva: [...document.querySelectorAll('header nav a[aria-current]')].map(a => a.getAttribute('href')),
+            ariaControlsRoto: [...document.querySelectorAll('[aria-controls]')]
+                .filter(a => !document.getElementById(a.getAttribute('aria-controls'))).length,
+            socialLinks: [...document.querySelectorAll('a[href^="http"]:not([href*="github.io"])')].map(a => a.hostname),
+            barrasHero: [...document.querySelectorAll('[aria-label^="Vista previa"] .h-28 > div > div')]
+                .map(d => Math.round(d.getBoundingClientRect().height)),
+        };
+    }"""
+    )}
+    r_seo["peticionesExternas"] = sorted(set(external))
+    r_seo["errors"] = []
+    if not r_seo["ogImage"]:
+        r_seo["errors"].append("falta og:image")
+    if r_seo["jsonLd"] in ("ausente", "JSON INVÁLIDO"):
+        r_seo["errors"].append(f"JSON-LD: {r_seo['jsonLd']}")
+    if r_seo["ariaControlsRoto"]:
+        r_seo["errors"].append(f"aria-controls apunta a id inexistente x{r_seo['ariaControlsRoto']}")
+    if set(r_seo["navActiva"]) != {"#proyectos"}:
+        r_seo["errors"].append(f"aria-current en nav = {r_seo['navActiva']} (esperaba ['#proyectos'])")
+    if r_seo["peticionesExternas"]:
+        r_seo["errors"].append(f"peticiones a terceros: {r_seo['peticionesExternas']}")
+    if len([h for h in r_seo["barrasHero"] if h > 5]) < len(r_seo["barrasHero"]) or not r_seo["barrasHero"]:
+        r_seo["errors"].append(f"barras del hero sin altura (deben crecer): {r_seo['barrasHero']}")
+    seo_page.screenshot(path=str(OUT / "seo-nav.png"))
+
     browser.close()
 
 result = {
-    "checks": [r_desktop_light, r_desktop_dark, r_mobile, r_reduced, r_focus],
+    "checks": [r_desktop_light, r_desktop_dark, r_mobile, r_reduced, r_focus, r_seo],
     "screenshots": sorted(p.name for p in OUT.glob("*.png")),
 }
 print(json.dumps(result, ensure_ascii=False, indent=2))

@@ -6,7 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    "lint": "oxlint",
+    "offline": "python scripts/build_offline.py",
+    "verify": "python scripts/verify.py",
+    "verify:offline": "python scripts/verify_offline.py",
+    "og": "python scripts/make_og_image.py"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -19,6 +24,7 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.0.0",
+    "oxlint": "^1.90.0",
     "typescript": "~6.0.2",
     "vite": "^8.1.1"
   }
