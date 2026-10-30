@@ -60,6 +60,12 @@ por teclado (foco visible y enlace "Saltar al contenido") · etiquetas `og:*`,
 JSON-LD, `aria-current` de la navegación, que las barras del hero tengan altura y
 que **no haya peticiones a terceros**. Si algo falla sale `RESULTADO: FALLOS`.
 
+## Informe de la última revisión
+
+`revision/REVISION.md` — qué estaba roto (con la medición que lo prueba), qué se
+cambió archivo por archivo, los resultados del QA y la zona congelada. Sus
+capturas de evidencia están en `revision/capturas/`.
+
 ## Dónde se edita el contenido
 
 Todo el texto vive en `src/data/content.ts` (hero, servicios, trayectoria, stats,
