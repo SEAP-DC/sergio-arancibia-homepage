@@ -15,7 +15,17 @@ export function Projects() {
 
       <ul className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project, i) => (
-          <Reveal as="li" key={project.title} delay={(i % 3) * 90}>
+          <Reveal
+            as="li"
+            key={project.title}
+            delay={(i % 3) * 90}
+            className={
+              // si el total no llena la última fila, la última tarjeta la completa
+              i === projects.length - 1 && projects.length % 3 !== 0
+                ? "md:col-span-2 lg:col-span-2"
+                : undefined
+            }
+          >
             <ProjectCard project={project} index={i} />
           </Reveal>
         ))}

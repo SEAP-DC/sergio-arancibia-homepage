@@ -17,6 +17,8 @@ export interface Project {
   description: string;
   tech: string[];
   metric: string;
+  /** Enlace de descarga opcional (p. ej. APK alojado en public/downloads/). */
+  download?: { label: string; href: string };
 }
 
 export interface Step {

@@ -3,7 +3,7 @@
 Página de una sola página (One Page) para captar clientes de análisis de datos:
 limpieza de datos con Stata, automatización con Python y dashboards.
 
-- **En vivo:** <https://dongrafff.github.io/sergio-arancibia-homepage/>
+- **En vivo:** <https://seap-dc.github.io/sergio-arancibia-homepage/>
 - **Stack:** React 19 + TypeScript + Vite 7 + Tailwind CSS 4, sin backend.
 - **Despliegue:** la rama `main` publica la carpeta `docs/` en GitHub Pages
   (`vite.config.ts` fija `base` y el build deja `.nojekyll`).

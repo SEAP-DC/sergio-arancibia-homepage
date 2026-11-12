@@ -27,14 +27,14 @@ export const site = {
   email: "ser.arancibia@gmail.com",
   // versión visible (obfuscar @ para que no lo raspéen buscadores/spam)
   emailDisplay: "ser.arancibia(a)gmail.com",
-  url: "https://dongrafff.github.io/sergio-arancibia-homepage/",
+  url: "https://seap-dc.github.io/sergio-arancibia-homepage/",
   // Perfiles públicos. Se muestran en contacto y pie de página solo si van cargados;
   // agregar aquí (ej. LinkedIn) no requiere tocar componentes.
   social: [
     {
       label: "GitHub",
-      href: "https://github.com/dongrafff",
-      handle: "github.com/dongrafff",
+      href: "https://github.com/SEAP-DC",
+      handle: "github.com/SEAP-DC",
     },
   ] as SocialLink[],
 };
@@ -108,6 +108,24 @@ export const projects: Project[] = [
       "Rutinas que validan bases grandes registro a registro: campos faltantes, duplicados e inconsistencias entre periodos, con un informe de hallazgos listo para compartir.",
     tech: ["Stata", "Python"],
     metric: "Bases completas revisadas antes de entregar",
+  },
+  {
+    title: "Mi Receta Live — precios de farmacia en el bolsillo",
+    tagline: "App Android · 7 cadenas de farmacias",
+    description:
+      "Aplicación para comparar el precio de cada medicamento de una receta al instante: catálogo cifrado de unos 50.000 productos que funciona sin internet, búsqueda en vivo de precios actuales en las cadenas y lector de recetas con cámara que carga los medicamentos automáticamente. Los productos agotados se detectan y excluyen del mejor precio.",
+    tech: ["Android", "JavaScript", "OCR", "Web Scraping", "Cifrado AES"],
+    metric: "Mejor precio por farmacia para toda la receta, en segundos",
+    download: { label: "Descargar APK (v3.7)", href: "./downloads/MiReceta_Live.apk" },
+  },
+  {
+    title: "Mi Súper Mercado — lista de compras inteligente",
+    tagline: "App Android · Jumbo, Lider y Tottus",
+    description:
+      "Lista de compras para el supermercado con catálogo maestro de más de 35.000 productos con precios reales: autocompletado al escribir, búsqueda en línea cuando hay conexión y datos del usuario cifrados en el propio teléfono usando el Keystore de Android.",
+    tech: ["Android", "JavaScript", "Bases de datos", "Cifrado Keystore"],
+    metric: "35.000 productos catalogados con precios, incluso sin internet",
+    download: { label: "Descargar APK (v2.0)", href: "./downloads/SuperLista.apk" },
   },
 ];
 
