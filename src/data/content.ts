@@ -116,7 +116,6 @@ export const projects: Project[] = [
       "Aplicación para comparar el precio de cada medicamento de una receta al instante: catálogo cifrado de unos 50.000 productos que funciona sin internet, búsqueda en vivo de precios actuales en las cadenas y lector de recetas con cámara que carga los medicamentos automáticamente. Los productos agotados se detectan y excluyen del mejor precio.",
     tech: ["Android", "JavaScript", "OCR", "Web Scraping", "Cifrado AES"],
     metric: "Mejor precio por farmacia para toda la receta, en segundos",
-    download: { label: "Descargar APK (v3.7)", href: "./downloads/MiReceta_Live.apk" },
   },
   {
     title: "Mi Súper Mercado — lista de compras inteligente",
@@ -125,7 +124,6 @@ export const projects: Project[] = [
       "Lista de compras para el supermercado con catálogo maestro de más de 35.000 productos con precios reales: autocompletado al escribir, búsqueda en línea cuando hay conexión y datos del usuario cifrados en el propio teléfono usando el Keystore de Android.",
     tech: ["Android", "JavaScript", "Bases de datos", "Cifrado Keystore"],
     metric: "35.000 productos catalogados con precios, incluso sin internet",
-    download: { label: "Descargar APK (v2.0)", href: "./downloads/SuperLista.apk" },
   },
 ];
 
